@@ -8,7 +8,7 @@ const Burger = (props) => {
   for (const ingredient in ingredients) {
     const quantity = ingredients[ingredient];
     for (let i = 0; i < quantity; i++) {
-      mappedIngredients.push(<BurgerIngredient type={ingredient} />);
+      mappedIngredients.push(<BurgerIngredient key={`${ingredient}${i}`} type={ingredient} />);
     }
   }
 
