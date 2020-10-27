@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Burger from "../../components/Burger/Burger";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -44,7 +46,6 @@ class BurgerBuilder extends Component {
   removeIngredientHandler = type => {
 
     const currentIngredientCount = this.state.ingredients[type] - 1;
-    console.log(currentIngredientCount);
     if (currentIngredientCount < 0) {
       return;
     }
@@ -65,9 +66,9 @@ class BurgerBuilder extends Component {
     for (const ingredient in disabledStatusInfo) {
       disabledStatusInfo[ingredient] = disabledStatusInfo[ingredient] <= 0;
     }
-    console.log(disabledStatusInfo);
     return (
       <React.Fragment>
+        <Modal> <OrderSummary ingredients={this.state.ingredients} /></Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls canBePurchased={this.state.canBePurchased} totalPrice={this.state.totalPrice} disabled={disabledStatusInfo} ingredientAdded = { this.addIngredientHandler} ingredientRemoved = { this.removeIngredientHandler} />
       </React.Fragment>
