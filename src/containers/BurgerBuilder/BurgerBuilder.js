@@ -8,8 +8,8 @@ const INGREDIENT_PRICES = {
   salad: 0.5,
   cheese: 0.4,
   bacon: 0.7,
-  meat: 1.3
-}
+  meat: 1.3,
+};
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
@@ -20,62 +20,78 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     canBePurchased: false,
-    purchasing: false
+    purchasing: false,
   };
 
   canBurgerBePurchased = (ingredients) => {
     const totalIngredients = Object.keys(ingredients)
-      .map(currentIngredient => ingredients[currentIngredient])
+      .map((currentIngredient) => ingredients[currentIngredient])
       .reduce((sum, currentIngredientCount) => sum + currentIngredientCount, 0);
     this.setState({
-      canBePurchased: totalIngredients > 0
+      canBePurchased: totalIngredients > 0,
     });
-  }
+  };
 
-  addIngredientHandler = type => {
-
+  addIngredientHandler = (type) => {
     const currentIngredientCount = this.state.ingredients[type] + 1;
     const updatedIngredients = {
-      ...this.state.ingredients
+      ...this.state.ingredients,
     };
     updatedIngredients[type] = currentIngredientCount;
     const updatedPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
-    this.setState({ totalPrice: updatedPrice, ingredients: updatedIngredients });
+    this.setState({
+      totalPrice: updatedPrice,
+      ingredients: updatedIngredients,
+    });
     this.canBurgerBePurchased(updatedIngredients);
-  }
+  };
 
-  removeIngredientHandler = type => {
-
+  removeIngredientHandler = (type) => {
     const currentIngredientCount = this.state.ingredients[type] - 1;
     if (currentIngredientCount < 0) {
       return;
     }
     const updatedIngredients = {
-      ...this.state.ingredients
+      ...this.state.ingredients,
     };
     updatedIngredients[type] = currentIngredientCount;
     const updatedPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
-    this.setState({ totalPrice: updatedPrice, ingredients: updatedIngredients });
+    this.setState({
+      totalPrice: updatedPrice,
+      ingredients: updatedIngredients,
+    });
     this.canBurgerBePurchased(updatedIngredients);
-  }
+  };
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
-  }
+  };
+
+  purchaseCancelHandler = () => {
+    this.setState({ purchasing: false });
+  };
 
   render() {
-
     const disabledStatusInfo = {
-      ...this.state.ingredients
+      ...this.state.ingredients,
     };
     for (const ingredient in disabledStatusInfo) {
       disabledStatusInfo[ingredient] = disabledStatusInfo[ingredient] <= 0;
     }
     return (
       <React.Fragment>
-        <Modal show={this.state.purchasing}> <OrderSummary ingredients={this.state.ingredients} /></Modal>
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls ordered={this.purchaseHandler} canBePurchased={this.state.canBePurchased} totalPrice={this.state.totalPrice} disabled={disabledStatusInfo} ingredientAdded = { this.addIngredientHandler} ingredientRemoved = { this.removeIngredientHandler} />
+        <BuildControls
+          ordered={this.purchaseHandler}
+          canBePurchased={this.state.canBePurchased}
+          totalPrice={this.state.totalPrice}
+          disabled={disabledStatusInfo}
+          ingredientAdded={this.addIngredientHandler}
+          ingredientRemoved={this.removeIngredientHandler}
+        />
       </React.Fragment>
     );
   }

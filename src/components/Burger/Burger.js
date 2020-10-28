@@ -4,16 +4,16 @@ import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 const Burger = (props) => {
   const { ingredients } = props;
   let mappedIngredients = [];
-    for (const ingredient in ingredients) {
-      const quantity = ingredients[ingredient];
-      for (let i = 0; i < quantity; i++) {
-        mappedIngredients.push(
-          <BurgerIngredient key={`${ingredient}${i}`} type={ingredient} />
-        );
-      }
+  for (const ingredient in ingredients) {
+    const quantity = ingredients[ingredient];
+    for (let i = 0; i < quantity; i++) {
+      mappedIngredients.push(
+        <BurgerIngredient key={`${ingredient}${i}`} type={ingredient} />
+      );
+    }
   }
   if (mappedIngredients.length === 0) {
-    mappedIngredients = <p>Please start adding ingredients</p>
+    mappedIngredients = <p>Please start adding ingredients</p>;
   }
 
   return (
