@@ -19,7 +19,8 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 4,
-    canBePurchased: false
+    canBePurchased: false,
+    purchasing: false
   };
 
   canBurgerBePurchased = (ingredients) => {
@@ -58,6 +59,10 @@ class BurgerBuilder extends Component {
     this.canBurgerBePurchased(updatedIngredients);
   }
 
+  purchaseHandler = () => {
+    this.setState({ purchasing: true });
+  }
+
   render() {
 
     const disabledStatusInfo = {
@@ -68,9 +73,9 @@ class BurgerBuilder extends Component {
     }
     return (
       <React.Fragment>
-        <Modal> <OrderSummary ingredients={this.state.ingredients} /></Modal>
+        <Modal show={this.state.purchasing}> <OrderSummary ingredients={this.state.ingredients} /></Modal>
         <Burger ingredients={this.state.ingredients} />
-        <BuildControls canBePurchased={this.state.canBePurchased} totalPrice={this.state.totalPrice} disabled={disabledStatusInfo} ingredientAdded = { this.addIngredientHandler} ingredientRemoved = { this.removeIngredientHandler} />
+        <BuildControls ordered={this.purchaseHandler} canBePurchased={this.state.canBePurchased} totalPrice={this.state.totalPrice} disabled={disabledStatusInfo} ingredientAdded = { this.addIngredientHandler} ingredientRemoved = { this.removeIngredientHandler} />
       </React.Fragment>
     );
   }
