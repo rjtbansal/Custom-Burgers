@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "../../Logo/Logo";
 import classes from "./Toolbar.module.scss";
 
 const Toolbar = props => (
@@ -7,9 +8,7 @@ const Toolbar = props => (
     <div>
       MENU
     </div>
-    <div>
-      LOGO
-    </div>
+    <Logo />
     <nav>
       ...
     </nav>
