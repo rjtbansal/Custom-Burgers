@@ -16,10 +16,17 @@ const OrderSummary = (props) => {
       <h3>Your Order</h3>
       <p> Yummy burger with the following ingredients: </p>
       <ul>{ingredientSummary}</ul>
-      <p> <strong>Total price: {props.totalPrice.toFixed(2)}</strong> </p>
+      <p>
+        {" "}
+        <strong>Total price: {props.totalPrice.toFixed(2)}</strong>{" "}
+      </p>
       <p> Continue to Checkout? </p>
-      <Button buttonType="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
-      <Button buttonType="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
+      <Button buttonType="Danger" clicked={props.purchaseCancelled}>
+        CANCEL
+      </Button>
+      <Button buttonType="Success" clicked={props.purchaseContinued}>
+        CONTINUE
+      </Button>
     </React.Fragment>
   );
 };
