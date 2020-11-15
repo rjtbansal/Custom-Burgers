@@ -17,7 +17,9 @@
 }
 
 .Open {
-  transform: translateX(0); //shift sidedrawer to position specified above in Sidedrawer
+  transform: translateX(
+    0
+  ); //shift sidedrawer to position specified above in Sidedrawer
 }
 
 .Close {

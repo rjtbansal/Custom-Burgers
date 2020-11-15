@@ -3,8 +3,7 @@ import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import classes from "./SideDrawer.module.scss";
 
-const SideDrawer = props => {
-
+const SideDrawer = (props) => {
   return (
     <div className={classes.SideDrawer}>
       <Logo />
@@ -13,6 +12,6 @@ const SideDrawer = props => {
       </nav>
     </div>
   );
-}
+};
 
 export default SideDrawer;
