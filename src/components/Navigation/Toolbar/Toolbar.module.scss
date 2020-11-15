@@ -12,6 +12,12 @@
   box-sizing: border-box;
   z-index: 90;
 
+  @media (max-width: 499px) {
+    .DesktopOnly {
+      display: none;
+    }
+  }
+
   nav {
     height: 100%;
   }
