@@ -5,6 +5,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/OrderSummary/OrderSummary";
 import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -90,7 +91,7 @@ class BurgerBuilder extends Component {
       deliveryMethod: 'fastest'
     };
     try{
-      const response = await axios.post('/orders.json', order); //.json is firebase specific
+      await axios.post('/orders.json', order); //.json is firebase specific
       this.setState({ isLoading: false, purchasing: false });
     } catch (error) {
       this.setState({ isLoading: false, purchasing: false });
@@ -138,4 +139,4 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
