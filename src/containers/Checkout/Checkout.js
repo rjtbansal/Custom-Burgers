@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component {
 
@@ -18,7 +20,6 @@ class Checkout extends Component {
     //this ish ow you loop through query parameter entries
     for (let param of query.entries()) {
       //we want it in the form: ['bacon','2']
-      console.log(param);
       ingredients[param[0]] = +param[1]; //+ converts the string to number. Here we want '2' to become 2
     }
     this.setState({ ingredients: ingredients });
@@ -37,6 +38,7 @@ class Checkout extends Component {
     return (
       <div>
         <CheckoutSummary checkoutCancelled={ this.checkoutCancelledHandler } checkoutContinued={this.checkoutContinuedHandler } ingredients={this.state.ingredients} />
+        <Route path={`${this.props.match.path}/contact-data`} component={ContactData} />
       </div>
     );
   }
