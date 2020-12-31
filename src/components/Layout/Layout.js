@@ -12,19 +12,21 @@ class Layout extends Component {
     this.setState({ showSideDrawer: false });
   };
 
-
   sideDrawerToggleHandler = () => {
     //never directly mutate the state when it depends on the old state. always toggle from old state
-    this.setState(prevState => {
-      return { showSideDrawer: !prevState.showSideDrawer }
+    this.setState((prevState) => {
+      return { showSideDrawer: !prevState.showSideDrawer };
     });
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
         <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
-        <SideDrawer closed={this.sideDrawerClosedHandler} open={this.state.showSideDrawer} />
+        <SideDrawer
+          closed={this.sideDrawerClosedHandler}
+          open={this.state.showSideDrawer}
+        />
         <main className={classes.Content}>{this.props.children}</main>
       </React.Fragment>
     );

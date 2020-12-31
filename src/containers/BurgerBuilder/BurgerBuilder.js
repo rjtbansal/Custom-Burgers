@@ -20,15 +20,16 @@ class BurgerBuilder extends Component {
     canBePurchased: false,
     purchasing: false,
     isLoading: false,
-    error: false
+    error: false,
   };
 
   async componentDidMount() {
-    try{
-    const response = await axios.get('https://mycustomburger.firebaseio.com/ingredients.json');
+    try {
+      const response = await axios.get(
+        "https://mycustomburger.firebaseio.com/ingredients.json"
+      );
       this.setState({ ingredients: response.data });
-    }
-    catch (error) {
+    } catch (error) {
       this.setState({ error: true });
     }
   }
@@ -85,11 +86,18 @@ class BurgerBuilder extends Component {
     const queryParams = [];
     for (let key in this.state.ingredients) {
       //encodeURIComponent encodes are data to be prepared for use in URL
-      queryParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(this.state.ingredients[key])}`);
+      queryParams.push(
+        `${encodeURIComponent(key)}=${encodeURIComponent(
+          this.state.ingredients[key]
+        )}`
+      );
     }
     queryParams.push(`price=${this.state.totalPrice}`);
-    const queryString = queryParams.join('&'); //& needs to be appended between all queryParams so: ?salad=2&bacon=1 and so on
-    this.props.history.push({pathname: '/checkout', search: `?${queryString}`}); //switch to new page
+    const queryString = queryParams.join("&"); //& needs to be appended between all queryParams so: ?salad=2&bacon=1 and so on
+    this.props.history.push({
+      pathname: "/checkout",
+      search: `?${queryString}`,
+    }); //switch to new page
   };
 
   render() {
@@ -103,29 +111,31 @@ class BurgerBuilder extends Component {
     let orderSummary = null;
     let burger = this.state.error ? "Cant load ingredients" : <Spinner />;
 
-    if(this.state.ingredients) {
-        burger = (
-          <React.Fragment>
-            <Burger ingredients={this.state.ingredients} />
-            <BuildControls
-              ordered={this.purchaseHandler}
-              canBePurchased={this.state.canBePurchased}
-              totalPrice={this.state.totalPrice}
-              disabled={disabledStatusInfo}
-              ingredientAdded={this.addIngredientHandler}
-              ingredientRemoved={this.removeIngredientHandler}
-            />
-          </React.Fragment>
-        );
-      orderSummary = <OrderSummary
-              totalPrice={this.state.totalPrice}
-              ingredients={this.state.ingredients}
-              purchaseCancelled={this.purchaseCancelHandler}
-              purchaseContinued={this.purchaseContinueHandler}
-            />;
+    if (this.state.ingredients) {
+      burger = (
+        <React.Fragment>
+          <Burger ingredients={this.state.ingredients} />
+          <BuildControls
+            ordered={this.purchaseHandler}
+            canBePurchased={this.state.canBePurchased}
+            totalPrice={this.state.totalPrice}
+            disabled={disabledStatusInfo}
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+          />
+        </React.Fragment>
+      );
+      orderSummary = (
+        <OrderSummary
+          totalPrice={this.state.totalPrice}
+          ingredients={this.state.ingredients}
+          purchaseCancelled={this.purchaseCancelHandler}
+          purchaseContinued={this.purchaseContinueHandler}
+        />
+      );
     }
-    
-     if (this.state.isLoading) {
+
+    if (this.state.isLoading) {
       orderSummary = <Spinner />;
     }
 
@@ -135,9 +145,9 @@ class BurgerBuilder extends Component {
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
         >
-          { orderSummary }
+          {orderSummary}
         </Modal>
-        { burger }
+        {burger}
       </React.Fragment>
     );
   }
