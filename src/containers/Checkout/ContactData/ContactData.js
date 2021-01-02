@@ -4,6 +4,7 @@ import classes from "./ContactData.module.scss";
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
+import { cloneDeep } from "lodash";
 
 class ContactData extends Component {
   state = {
@@ -78,6 +79,13 @@ class ContactData extends Component {
     }
   };
 
+  inputChangedHandler = (event, inputIdentifier) => {
+    /**we need to deepclone our state object. Using lodash library for deep clone */
+    const copiedOrderForm = cloneDeep(this.state.orderForm);
+    copiedOrderForm[inputIdentifier].value = event.target.value;
+    this.setState({ orderForm: copiedOrderForm });
+  };
+
   render() {
     const formElementsArray = [];
     for (let key in this.state.orderForm) {
@@ -95,6 +103,7 @@ class ContactData extends Component {
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
+            changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
         <Button buttonType="Success" clicked={this.orderHandler}>
