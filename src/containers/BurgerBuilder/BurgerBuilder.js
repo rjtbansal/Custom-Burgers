@@ -24,14 +24,15 @@ class BurgerBuilder extends Component {
   };
 
   async componentDidMount() {
-    try {
-      const response = await axios.get(
-        "https://mycustomburger.firebaseio.com/ingredients.json"
-      );
-      this.setState({ ingredients: response.data });
-    } catch (error) {
-      this.setState({ error: true });
-    }
+    console.log(this.props);
+    // try {
+    //   const response = await axios.get(
+    //     "https://mycustomburger.firebaseio.com/ingredients.json"
+    //   );
+    //   this.setState({ ingredients: response.data });
+    // } catch (error) {
+    //   this.setState({ error: true });
+    // }
   }
 
   canBurgerBePurchased = (ingredients) => {
