@@ -85,9 +85,14 @@ class ContactData extends Component {
           ],
         },
         value: "fastest",
+        valid: true,
+        validation: {
+          required: false
+        }
       },
     },
     loading: false,
+    formIsValid: false
   };
 
   orderHandler = async (event) => {
@@ -140,7 +145,12 @@ class ContactData extends Component {
       copiedOrderForm[inputIdentifier].validation
     );
     copiedOrderForm[inputIdentifier].touched = true;
-    this.setState({ orderForm: copiedOrderForm });
+
+    let formIsValid = true;
+    for (let inputIdentifier in copiedOrderForm) {
+      formIsValid = copiedOrderForm[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ orderForm: copiedOrderForm, formIsValid: formIsValid });
   };
 
   render() {
@@ -166,7 +176,7 @@ class ContactData extends Component {
             changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button buttonType="Success">ORDER</Button>
+        <Button buttonType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading) {
