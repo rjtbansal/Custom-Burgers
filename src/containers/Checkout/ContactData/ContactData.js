@@ -16,6 +16,11 @@ class ContactData extends Component {
           placeholder: "Your Name",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -24,6 +29,11 @@ class ContactData extends Component {
           placeholder: "Street",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: "input",
@@ -32,6 +42,13 @@ class ContactData extends Component {
           placeholder: "Zip Code",
         },
         value: "",
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 6,
+        },
+        valid: false,
+        touched: false,
       },
       country: {
         elementType: "input",
@@ -40,6 +57,11 @@ class ContactData extends Component {
           placeholder: "Country",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -48,6 +70,11 @@ class ContactData extends Component {
           placeholder: "Your Email",
         },
         value: "",
+        validation: {
+          required: true,
+        },
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -58,9 +85,14 @@ class ContactData extends Component {
           ],
         },
         value: "fastest",
+        valid: true,
+        validation: {
+          required: false
+        }
       },
     },
     loading: false,
+    formIsValid: false
   };
 
   orderHandler = async (event) => {
@@ -68,12 +100,14 @@ class ContactData extends Component {
     this.setState({ isLoading: true });
     const formData = {};
     for (let formElementIdentifier in this.state.orderForm) {
-      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+      formData[formElementIdentifier] = this.state.orderForm[
+        formElementIdentifier
+      ].value;
     }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      orderData: formData
+      orderData: formData,
     };
     try {
       await axios.post("/orders.json", order); //.json is firebase specific
@@ -84,11 +118,39 @@ class ContactData extends Component {
     }
   };
 
+  checkValidity = (value, rules) => {
+    let isValid = true;
+    //if we dont && with isValid maxLength would be satisfied even if minLength doesnt
+    if (rules.required) {
+      isValid = value.trim() !== "" && isValid;
+    }
+
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+
+    return isValid;
+  };
+
   inputChangedHandler = (event, inputIdentifier) => {
     /**we need to deepclone our state object. Using lodash library for deep clone */
     const copiedOrderForm = cloneDeep(this.state.orderForm);
     copiedOrderForm[inputIdentifier].value = event.target.value;
-    this.setState({ orderForm: copiedOrderForm });
+    copiedOrderForm[inputIdentifier].valid = this.checkValidity(
+      copiedOrderForm[inputIdentifier].value,
+      copiedOrderForm[inputIdentifier].validation
+    );
+    copiedOrderForm[inputIdentifier].touched = true;
+
+    let formIsValid = true;
+    for (let inputIdentifier in copiedOrderForm) {
+      formIsValid = copiedOrderForm[inputIdentifier].valid && formIsValid;
+    }
+    this.setState({ orderForm: copiedOrderForm, formIsValid: formIsValid });
   };
 
   render() {
@@ -108,12 +170,13 @@ class ContactData extends Component {
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
             changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button buttonType="Success">
-          ORDER
-        </Button>
+        <Button buttonType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading) {
