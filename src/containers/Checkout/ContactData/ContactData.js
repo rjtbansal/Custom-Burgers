@@ -5,6 +5,7 @@ import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import { cloneDeep } from "lodash";
+import { connect } from "react-redux";
 
 class ContactData extends Component {
   state = {
@@ -87,12 +88,12 @@ class ContactData extends Component {
         value: "fastest",
         valid: true,
         validation: {
-          required: false
-        }
+          required: false,
+        },
       },
     },
     loading: false,
-    formIsValid: false
+    formIsValid: false,
   };
 
   orderHandler = async (event) => {
@@ -105,7 +106,7 @@ class ContactData extends Component {
       ].value;
     }
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
     };
@@ -176,7 +177,9 @@ class ContactData extends Component {
             changed={(event) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button buttonType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
+        <Button buttonType="Success" disabled={!this.state.formIsValid}>
+          ORDER
+        </Button>
       </form>
     );
     if (this.state.loading) {
@@ -190,5 +193,11 @@ class ContactData extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    ings: state.ingredients,
+    price: state.totalPrice,
+  };
+};
 
-export default ContactData;
+export default connect(mapStateToProps)(ContactData);
