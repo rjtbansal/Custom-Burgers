@@ -9,15 +9,9 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionTypes from "../../store/actions";
 import { connect } from "react-redux";
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  cheese: 0.4,
-  bacon: 0.7,
-  meat: 1.3,
-};
+
 class BurgerBuilder extends Component {
   state = {
-    totalPrice: 4,
     canBePurchased: false,
     purchasing: false,
     isLoading: false,
@@ -43,37 +37,6 @@ class BurgerBuilder extends Component {
     this.setState({
       canBePurchased: totalIngredients > 0,
     });
-  };
-
-  addIngredientHandler = (type) => {
-    const currentIngredientCount = this.state.ingredients[type] + 1;
-    const updatedIngredients = {
-      ...this.state.ingredients,
-    };
-    updatedIngredients[type] = currentIngredientCount;
-    const updatedPrice = this.state.totalPrice + INGREDIENT_PRICES[type];
-    this.setState({
-      totalPrice: updatedPrice,
-      ingredients: updatedIngredients,
-    });
-    this.canBurgerBePurchased(updatedIngredients);
-  };
-
-  removeIngredientHandler = (type) => {
-    const currentIngredientCount = this.state.ingredients[type] - 1;
-    if (currentIngredientCount < 0) {
-      return;
-    }
-    const updatedIngredients = {
-      ...this.state.ingredients,
-    };
-    updatedIngredients[type] = currentIngredientCount;
-    const updatedPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
-    this.setState({
-      totalPrice: updatedPrice,
-      ingredients: updatedIngredients,
-    });
-    this.canBurgerBePurchased(updatedIngredients);
   };
 
   purchaseHandler = () => {
@@ -120,7 +83,7 @@ class BurgerBuilder extends Component {
           <BuildControls
             ordered={this.purchaseHandler}
             canBePurchased={this.state.canBePurchased}
-            totalPrice={this.state.totalPrice}
+            totalPrice={this.props.price}
             disabled={disabledStatusInfo}
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
@@ -129,7 +92,7 @@ class BurgerBuilder extends Component {
       );
       orderSummary = (
         <OrderSummary
-          totalPrice={this.state.totalPrice}
+          totalPrice={this.props.price}
           ingredients={this.props.ings}
           purchaseCancelled={this.purchaseCancelHandler}
           purchaseContinued={this.purchaseContinueHandler}
@@ -158,6 +121,7 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => {
   return {
     ings: state.ingredients,
+    price: state.totalPrice
   };
 };
 
