@@ -26,13 +26,6 @@ const reducer = (state = initialState, action) => {
       copyStateForAddIngredient.totalPrice +=
         INGREDIENT_PRICES[action.ingredientName];
       return copyStateForAddIngredient;
-    // return {
-    //   // ...state,
-    //   // ingredients: {
-    //   //   ...state.ingredients,
-    //   //   [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-    //   // }
-    // };
 
     case actionTypes.REMOVE_INGREDIENT:
       const copyStateForRemoveIngredient = cloneDeep(state);
