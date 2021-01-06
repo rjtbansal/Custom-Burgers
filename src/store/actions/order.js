@@ -16,9 +16,16 @@ export const purchaseBurgerFail = (error) => {
   }
 }
 
-export const purchaseBurgerStart = (orderData) => {
+export const purchaseBurgerStart = () => {
+  return {
+    type: actionTypes.PURCHASE_BURGER_START
+  }
+}
 
-  return async(dispatch) => {
+export const purchaseBurger = (orderData) => {
+
+  return async (dispatch) => {
+    dispatch(purchaseBurgerStart());
     try {
       const response = await axios.post("/orders.json", orderData); //.json is firebase specific
       dispatch(purchaseBurgerSuccess(response.data, orderData))
