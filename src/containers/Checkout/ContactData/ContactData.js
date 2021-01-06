@@ -6,6 +6,8 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import { cloneDeep } from "lodash";
 import { connect } from "react-redux";
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/';
 
 class ContactData extends Component {
   state = {
@@ -98,7 +100,7 @@ class ContactData extends Component {
 
   orderHandler = async (event) => {
     event.preventDefault();
-    this.setState({ isLoading: true });
+
     const formData = {};
     for (let formElementIdentifier in this.state.orderForm) {
       formData[formElementIdentifier] = this.state.orderForm[
@@ -110,13 +112,9 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: formData,
     };
-    try {
-      await axios.post("/orders.json", order); //.json is firebase specific
-      this.setState({ isLoading: false });
-      this.props.history.push("/");
-    } catch (error) {
-      this.setState({ isLoading: false });
-    }
+
+    this.props.onOrderBurger(order);
+    
   };
 
   checkValidity = (value, rules) => {
@@ -200,4 +198,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderBurger: (orderData) => dispatch(actions.purchaseBurgerStart(orderData))
+  }
+}
+
+export default connect(mapStateToProps)(withErrorHandler(ContactData, axios));
