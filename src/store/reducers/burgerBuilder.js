@@ -1,10 +1,11 @@
 import * as actionTypes from "../actions/actionTypes";
 import { cloneDeep } from "lodash";
+import { updateObject } from "../utility";
 
 const initialState = {
   ingredients: null,
   totalPrice: 4,
-  error: false
+  error: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -31,18 +32,15 @@ const reducer = (state = initialState, action) => {
       return copyStateForRemoveIngredient;
 
     case actionTypes.SET_INGREDIENTS:
-      return {
-        ...state,
+      return updateObject(state, {
         ingredients: action.ingredients,
         error: false,
-        totalPrice: 4
-      }
-    
-    case actionTypes.FETCH_INGREDIENTS_FAILED: 
-      return {
-        ...state,
-        error: true
-      }
+        totalPrice: 4,
+      });
+
+    case actionTypes.FETCH_INGREDIENTS_FAILED:
+      return updateObject(state, { error: true });
+
     default:
       return state;
   }
