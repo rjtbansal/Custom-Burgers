@@ -36,7 +36,7 @@ class Auth extends Component {
         touched: false,
       },
     },
-    formIsValid: false
+    formIsValid: false,
   };
 
   checkValidity = (value, rules) => {
@@ -110,7 +110,9 @@ class Auth extends Component {
       <div className={classes.Auth}>
         <form>
           {form}
-          <Button buttonType="Success" disabled={!this.state.formIsValid}>SUBMIT</Button>
+          <Button buttonType="Success" disabled={!this.state.formIsValid}>
+            SUBMIT
+          </Button>
         </form>
       </div>
     );

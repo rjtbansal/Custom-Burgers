@@ -72,9 +72,8 @@ export const fetchOrders = () => {
         fetchedOrders.push({ ...res.data[key], id: key });
       }
       dispatch(fetchOrdersSuccess(fetchedOrders));
-    }
-    catch (error) {
+    } catch (error) {
       dispatch(fetchOrdersFail(error));
     }
-  }
-} 
+  };
+};
