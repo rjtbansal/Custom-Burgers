@@ -40,7 +40,7 @@ export const auth = (email, password, isSignup) => {
       const response = await axios.post(url, authData);
       dispatch(authSuccess(response.data.idToken, response.data.localId));
     } catch (error) {
-      dispatch(authFail(error));
+      dispatch(authFail(error.response.data.error));
     }
   };
 };

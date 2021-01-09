@@ -5,6 +5,7 @@ import classes from "./Auth.module.scss";
 import { cloneDeep } from "lodash";
 import * as actions from "../../store/actions/";
 import { connect } from "react-redux";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 class Auth extends Component {
   state = {
@@ -109,7 +110,7 @@ class Auth extends Component {
         config: this.state.controls[key],
       });
     }
-    const form = formElementsArray.map((formElement) => (
+    let form = formElementsArray.map((formElement) => (
       <Input
         key={formElement.id}
         elementType={formElement.config.elementType}
@@ -121,6 +122,16 @@ class Auth extends Component {
         changed={(event) => this.inputChangedHandler(event, formElement.id)}
       />
     ));
+
+    if (this.props.loading) {
+      form = <Spinner />;
+    }
+
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = (<p>{this.props.error.message}</p>);
+    }
+
     return (
       <div className={classes.Auth}>
         <form onSubmit={this.submitHandler}>
@@ -129,6 +140,7 @@ class Auth extends Component {
           <Button buttonType="Success" disabled={!this.state.formIsValid}>
             SUBMIT
           </Button>
+          {errorMessage}
         </form>
         <Button buttonType="Danger" clicked={this.switchAuthModeHandler}>
           Switch to {this.state.isSignup ? "SIGN IN" : "SIGN UP"}
@@ -138,10 +150,18 @@ class Auth extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup)),
+    loading: state.auth.loading,
+    error: state.auth.error,
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (email, password, isSignup) =>
+      dispatch(actions.auth(email, password, isSignup)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
