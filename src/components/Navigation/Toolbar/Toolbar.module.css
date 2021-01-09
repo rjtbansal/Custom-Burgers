@@ -1,0 +1,36 @@
+.Toolbar {
+  height: 56px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #703b09;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  z-index: 90;
+}
+
+@media (max-width: 499px) {
+  .Toolbar .DesktopOnly {
+    display: none;
+  }
+}
+
+.Toolbar nav {
+  height: 100%;
+}
+
+.Toolbar .Logo {
+  height: 80%;
+}
+/*# sourceMappingURL=Toolbar.module.css.map */
