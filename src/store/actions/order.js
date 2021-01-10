@@ -26,7 +26,10 @@ export const purchaseBurger = (orderData, token) => {
   return async (dispatch) => {
     dispatch(purchaseBurgerStart());
     try {
-      const response = await axios.post(`/orders.json?auth=${token}`, orderData); //.json is firebase specific
+      const response = await axios.post(
+        `/orders.json?auth=${token}`,
+        orderData
+      ); //.json is firebase specific
       dispatch(purchaseBurgerSuccess(response.data.name, orderData));
     } catch (error) {
       dispatch(purchaseBurgerFail(error));
@@ -61,11 +64,12 @@ export const fetchOrdersStart = () => {
 };
 
 //thunk
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
   return async (dispatch) => {
     dispatch(fetchOrdersStart());
     try {
-      const res = await axios.get(`/orders.json?auth=${token}`);
+      const queryParams = `auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+      const res = await axios.get(`/orders.json?${queryParams}`);
       const fetchedOrders = [];
       //we are getting data as object and not array from firebase where key is unique id so we need to parse through it and save it in fetchedOrders as an object {id: , ...otherData}
       for (let key in res.data) {
