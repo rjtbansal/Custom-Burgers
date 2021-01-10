@@ -25,17 +25,17 @@ export const authFail = (error) => {
 
 export const logout = () => {
   return {
-    type: actionTypes.AUTH_LOGOUT
+    type: actionTypes.AUTH_LOGOUT,
   };
-}
+};
 
 export const checkAuthTimeout = (expirationTime) => {
-  return dispatch => {
+  return (dispatch) => {
     setTimeout(() => {
       dispatch(logout());
     }, expirationTime * 1000);
-  }
-}
+  };
+};
 
 /**will be an async call to authentication request */
 export const auth = (email, password, isSignup) => {
@@ -57,5 +57,12 @@ export const auth = (email, password, isSignup) => {
     } catch (error) {
       dispatch(authFail(error.response.data.error));
     }
+  };
+};
+
+export const setAuthRedirectPath = (path) => {
+  return {
+    type: actionTypes.SET_AUTH_REDIRECT_PATH,
+    path,
   };
 };
