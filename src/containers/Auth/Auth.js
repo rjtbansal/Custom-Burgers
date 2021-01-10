@@ -6,6 +6,7 @@ import { cloneDeep } from "lodash";
 import * as actions from "../../store/actions/";
 import { connect } from "react-redux";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
   state = {
@@ -132,8 +133,14 @@ class Auth extends Component {
       errorMessage = <p>{this.props.error.message}</p>;
     }
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to="/" />;
+    }
+
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         <form onSubmit={this.submitHandler}>
           <h3> {this.state.isSignup ? "SIGN UP" : "SIGN IN"} </h3>
           {form}
@@ -154,6 +161,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    isAuthenticated: state.auth.token !== null,
   };
 };
 
