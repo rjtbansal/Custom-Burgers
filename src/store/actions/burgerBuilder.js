@@ -26,20 +26,20 @@ export const setIngredients = (ingredients) => {
 
 export const fetchIngredientsFailed = () => {
   return {
-    type: actionTypes.FETCH_INGREDIENTS_FAILED
-  }
-}
+    type: actionTypes.FETCH_INGREDIENTS_FAILED,
+  };
+};
 
 export const initIngredients = () => {
   //thunk middleware is letting us do async request below in the manner
-  return async(dispatch) => {
+  return async (dispatch) => {
     try {
       const response = await axios.get(
         "https://mycustomburger.firebaseio.com/ingredients.json"
       );
       dispatch(setIngredients(response.data));
     } catch (error) {
-      dispatch(fetchIngredientsFailed())
+      dispatch(fetchIngredientsFailed());
     }
-  }
-}
+  };
+};

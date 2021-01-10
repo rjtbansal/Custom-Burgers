@@ -6,9 +6,6 @@ import ContactData from "./ContactData/ContactData";
 import * as actions from "../../store/actions/";
 
 class Checkout extends Component {
-
-
-
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -21,12 +18,13 @@ class Checkout extends Component {
     let summary = <Redirect to="/" />;
 
     if (this.props.ings) {
-
-      const redirectOnPurchase = this.props.purchased ? <Redirect to="/" /> : null;
+      const redirectOnPurchase = this.props.purchased ? (
+        <Redirect to="/" />
+      ) : null;
 
       summary = (
         <div>
-          { redirectOnPurchase }
+          {redirectOnPurchase}
           <CheckoutSummary
             checkoutCancelled={this.checkoutCancelledHandler}
             checkoutContinued={this.checkoutContinuedHandler}
@@ -46,9 +44,8 @@ class Checkout extends Component {
 const mapStateToProps = (state) => {
   return {
     ings: state.burgerBuilder.ingredients,
-    purchased: state.order.purchased
+    purchased: state.order.purchased,
   };
 };
-
 
 export default connect(mapStateToProps)(Checkout);

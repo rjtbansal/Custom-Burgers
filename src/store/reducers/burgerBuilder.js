@@ -6,6 +6,7 @@ const initialState = {
   ingredients: null,
   totalPrice: 4,
   error: false,
+  building: false //building the burger in progress
 };
 
 const INGREDIENT_PRICES = {
@@ -22,6 +23,7 @@ const reducer = (state = initialState, action) => {
       copyStateForAddIngredient.ingredients[action.ingredientName] += 1;
       copyStateForAddIngredient.totalPrice +=
         INGREDIENT_PRICES[action.ingredientName];
+      copyStateForAddIngredient.building=true;
       return copyStateForAddIngredient;
 
     case actionTypes.REMOVE_INGREDIENT:
@@ -29,6 +31,7 @@ const reducer = (state = initialState, action) => {
       copyStateForRemoveIngredient.ingredients[action.ingredientName] -= 1;
       copyStateForRemoveIngredient.totalPrice -=
         INGREDIENT_PRICES[action.ingredientName];
+      copyStateForRemoveIngredient.building = true;
       return copyStateForRemoveIngredient;
 
     case actionTypes.SET_INGREDIENTS:
@@ -36,6 +39,7 @@ const reducer = (state = initialState, action) => {
         ingredients: action.ingredients,
         error: false,
         totalPrice: 4,
+        building: false
       });
 
     case actionTypes.FETCH_INGREDIENTS_FAILED:
