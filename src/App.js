@@ -38,7 +38,7 @@ function App(props) {
   return (
     <div>
       <Layout>
-        <Switch>{routes}</Switch>
+         <Switch>{routes}</Switch> 
       </Layout>
     </div>
   );
