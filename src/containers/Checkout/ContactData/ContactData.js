@@ -8,6 +8,7 @@ import { cloneDeep } from "lodash";
 import { connect } from "react-redux";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/";
+import { checkValidity } from "../../../shared/utility";
 
 class ContactData extends Component {
   state = {
@@ -117,39 +118,11 @@ class ContactData extends Component {
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    //if we dont && with isValid maxLength would be satisfied even if minLength doesnt
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    return isValid;
-  };
-
   inputChangedHandler = (event, inputIdentifier) => {
     /**we need to deepclone our state object. Using lodash library for deep clone */
     const copiedOrderForm = cloneDeep(this.state.orderForm);
     copiedOrderForm[inputIdentifier].value = event.target.value;
-    copiedOrderForm[inputIdentifier].valid = this.checkValidity(
+    copiedOrderForm[inputIdentifier].valid = checkValidity(
       copiedOrderForm[inputIdentifier].value,
       copiedOrderForm[inputIdentifier].validation
     );
