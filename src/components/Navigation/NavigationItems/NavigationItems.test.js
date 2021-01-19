@@ -8,8 +8,20 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 configure({ adapter: new Adapter() });
 
 describe("<NavigationItems />", () => {
+  let wrapper;
+  //runs before each test case
+  beforeEach(() => {
+    wrapper = shallow(<NavigationItems />);
+  });
+
   it("should render two <NavigationItem /> components if unauthenticated", () => {
-    const wrapper = shallow(<NavigationItems />);
+    // not passing isAuthenticated prop will pass it as false
     expect(wrapper.find(NavigationItem)).toHaveLength(2);
+  });
+
+  it("should render three <NavigationItem /> components if authenticated", () => {
+    // passing isAuthenticated prop will pass it as true
+    wrapper.setProps({ isAuthenticated: true}); //setProps allows us to pass props in helper function
+    expect(wrapper.find(NavigationItem)).toHaveLength(3);
   });
 });
