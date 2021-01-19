@@ -1,0 +1,1 @@
+//copy code for async component from routing module
