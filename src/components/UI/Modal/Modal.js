@@ -15,4 +15,10 @@ const Modal = (props) => (
   </React.Fragment>
 );
 
-export default Modal;
+export default React.memo(
+  Modal,
+  //providing rendering logic. Render only if prevProps and nextProps arent equal. If they are equal just use prev result and hence dont re-render
+  (prevProps, nextProps) =>
+    nextProps.show === prevProps.show &&
+    nextProps.children === prevProps.children
+);
