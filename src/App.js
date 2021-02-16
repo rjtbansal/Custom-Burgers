@@ -11,9 +11,11 @@ const Orders = lazy(() => import("./containers/Orders/Orders"));
 const Auth = lazy(() => import("./containers/Auth/Auth"));
 
 function App(props) {
+
+  const { onTryAutoSignup } = props; 
   useEffect(() => {
-    props.onTryAutoSignup();
-  }, [props]);
+    onTryAutoSignup();
+  }, [onTryAutoSignup]);
 
   let routes = (
     <>
